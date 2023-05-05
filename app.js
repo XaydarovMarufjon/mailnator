@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const path = require('path');
-
 const app = express();
 
 // Ejs ni togirlab olamiz
@@ -21,12 +20,12 @@ app.get('/', (req, res) => {
 // Define route to handle email form submissions
 app.post('/send-email', (req, res) => {
     const { to, subject, message } = req.body;
-
+  console.log(req.body);
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'marufjankhaydarov@gmail.com',
-            pass: 'gepdhixmtyksmqvt'
+            user: 'yourEmail@gmail.com',
+            pass: 'app password' 
         }
     });
 
@@ -46,6 +45,7 @@ app.post('/send-email', (req, res) => {
             res.send('Email sent successfully');
         }
     });
+    
 });
 
 
@@ -53,8 +53,12 @@ app.get('/send-email', (req, res) => {
     res.render('success');
 });
 
+
+app.get('/axror', (req, res) => {
+    res.send('uyga bor');
+});
 // Start server
-const PORT = process.env.PORT || 3002;
+const PORT =  3000;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
