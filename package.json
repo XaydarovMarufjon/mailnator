@@ -15,6 +15,7 @@
     "bootstrap": "^5.3.0-alpha3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
     "nodemailer": "^6.9.1"
   },
   "devDependencies": {

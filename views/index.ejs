@@ -20,6 +20,30 @@
 
         <button type="submit" class="btn btn-primary my-3 w-100">Send Email</button>
     </form>
+<br>
+
+    <h1 class="text-danger">Comments</h1>
+
+<% comments.forEach(comment => { %>
+  <div>
+    <h3><%= comment.name %></h3>
+    <p><%= comment.comment %></p>
+  </div>
+<% }); %>
+
+<hr>
+
+<h2>Add a Comment</h2>
+
+<form action="/" method="POST" class=" w-50">
+  <label for="name" class="form-label">Name:</label>
+  <input type="text" id="name" name="name" required class="form-control">
+
+  <label for="comment" class="form-label">Comment:</label>
+  <textarea id="comment" name="comment" rows="4" required class="form-control"></textarea>
+
+  <button type="submit" class="btn btn-success mt-3">Submit</button>
+</form>
 
 
 
