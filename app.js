@@ -1,69 +1,93 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
-const path = require('path');
-const app = express();
+const express=require('express');
+const bodyParser=require('body-parser');
+const nodemailer=require('nodemailer');
+const path=require('path');
+const ejs=require('ejs');
+const fs=require('fs');
 
-// Ejs ni togirlab olamiz
+const app=express();
+
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 console.log(__dirname);
 
-// Set up body-parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+        extended: false
+    }));
 
-// Define route to render email form
-app.get('/', (req, res) => {
-    res.render('index');
+
+let comments=[];
+
+app.get('/', (req, res)=> {
+        res.render('index');
 });
 
-// Define route to handle email form submissions
-app.post('/send-email', (req, res) => {
-    const { to, subject, message } = req.body;
-  console.log(req.body);
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'yourEmail@gmail.com',
-            pass: 'app password' 
-        }
-    });
+app.get('/comments', (req, res)=> {
+    res.render('comments', {comments});
+});
 
-    const mailOptions = {
+app.post('/send-email', (req, res)=> {
+        const {
+            to, subject, message
+        }
+
+        =req.body;
+
+        const transporter=nodemailer.createTransport({
+
+            service: 'gmail',
+            auth: {
+                user: 'marufjankhaydarov@gmail.com',
+                pass: 'gepdhixmtyksmqvt'
+            }
+        });
+
+    const mailOptions= {
         from: 'marufjankhaydarov@gmail.com',
         to,
         subject,
         text: message
-    };
+    }
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-            res.status(500).send('Error sending email');
-        } else {
-            console.log('Email sent: ' + info.response);
-            res.send('Email sent successfully');
-        }
+    ;
+
+    transporter.sendMail(mailOptions, (error, info)=> {
+            if (error) {
+                console.log(error);
+                res.status(500).send('Error sending email');
+            }
+
+            else {
+                console.log('Email sent: ' + info.response);
+                res.render('success');
+            }
+        });
+
+});
+
+///comments
+
+app.post('/comments', (req, res)=> {
+        const {  name, comment } = req.body;
+        console.log(req.body)
+        const newComment= {
+            name,
+            comment
+        };
+         
+        console.log(comments)
+        comments.push(newComment);
+        res.redirect('/comments');
     });
-    
-});
 
 
-app.get('/send-email', (req, res) => {
-    res.render('success');
-});
 
 
-app.get('/axror', (req, res) => {
-    res.send('uyga bor');
-});
+
 // Start server
-const PORT =  3000;
-app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-});
+const PORT=3003;
 
-
-
-
-
+app.listen(PORT, ()=> {
+        console.log(`Server started on port ${PORT}`);
+    });
