@@ -8,19 +8,22 @@ const fs = require('fs');
 const app = express();
 
 // Ejs ni togirlab olamiz
-app.set('views', path.join(__dirname, 'views'));
+
 app.set('view engine', 'ejs');
 console.log(__dirname);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
 let comments = [];
 app.get('/', (req, res) => {
+    res.render('main');
+});
+
+app.get('/email', (req, res) => {
     res.render('index' , { comments });
 });
 
-app.post('/send-email', (req, res) => {
+app.post('/email/send-email', (req, res) => {
     const { to, subject, message } = req.body;
 
     const transporter = nodemailer.createTransport({
@@ -55,20 +58,22 @@ app.post('/send-email', (req, res) => {
 
   
   // Handle comment submission
-  app.post('/', (req, res) => {
-    const { name, comment } = req.body;
+  app.post('/email', (req, res) => {
+    const { name, comment,url } = req.body;
   
     // Create a new comment object
     const newComment = {
       name,
-      comment
+      comment,
+      url,
     };
   
     // Add the new comment to the comments array
     comments.push(newComment);
   
     // Redirect back to the comments page
-    res.redirect('/');
+    res.redirect('/email');
+   
   });
   
 
